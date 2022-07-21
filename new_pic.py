@@ -4,7 +4,7 @@ import shutil
 
 
 def new_pic():
-    fol = os.listdir("pic")
+    fol = os.listdir("Data/pic")
     mx = 0
     for i in fol:
         t = os.listdir("pic\\" + i)

@@ -8,11 +8,11 @@ import os
 
 def iris_learn():
     # Каталог с данными для обучения
-    train_dir = 'learn/tren'
+    train_dir = 'Data/learn/tren'
     # Каталог с данными для проверки
-    val_dir = 'learn/val'
+    val_dir = 'Data/learn/val'
     # Каталог с данными для тестирования
-    test_dir = 'learn/test'
+    test_dir = 'Data/learn/test'
     # Размеры изображения
     img_width, img_height = 250, 250
     # Размерность тензора на основе изображения для входных данных в нейронную сеть
@@ -73,7 +73,7 @@ def iris_learn():
         batch_size=batch_size,
         class_mode='categorical')
 
-    checkpoint = ModelCheckpoint("models/best.h5", monitor='val_loss', verbose=1, save_best_only=True, mode='min')
+    checkpoint = ModelCheckpoint("Data/models/best.h5", monitor='val_loss', verbose=1, save_best_only=True, mode='min')
     callbacks_list = [checkpoint]
 
     model.fit_generator(train_generator,
@@ -83,7 +83,7 @@ def iris_learn():
                         validation_steps=nb_validation_samples // batch_size,
                         callbacks=callbacks_list)
 
-    converter = tensorflow.compat.v1.lite.TFLiteConverter.from_keras_model_file('models/best.h5')
+    converter = tensorflow.compat.v1.lite.TFLiteConverter.from_keras_model_file('Data/models/best.h5')
     tflite_model = converter.convert()
-    with open('models/model.tflite', 'wb') as f:
+    with open('Data/models/model.tflite', 'wb') as f:
         f.write(tflite_model)

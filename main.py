@@ -35,7 +35,7 @@ def index():
 
 
 def add_loc(id, h, w):
-    db = sqlite3.connect("ParKulting.db")
+    db = sqlite3.connect("Database/ParKulting.db")
     cursor = db.cursor()
     sqlite_insert_query = f"""INSERT INTO location_points
                             (point_id, location_width, location_longitude)
@@ -46,14 +46,14 @@ def add_loc(id, h, w):
 
 
 def get_park_id(name):
-    db = sqlite3.connect("ParKulting.db")
+    db = sqlite3.connect("Database/ParKulting.db")
     cursor = db.cursor()
     id = cursor.execute(f'select id from parks where park = "{name}"').fetchall()[0][0]
     return id
 
 
 def get_iris_id(name):
-    fold = os.listdir("pic\\")[-1]
+    fold = os.listdir("Data/pic\\")[-1]
     num = ""
     for i in fold:
         if i in "0123456789":
@@ -64,7 +64,7 @@ def get_iris_id(name):
 
 
 def add_point(park_id, iris_id, name, info, url):
-    db = sqlite3.connect("ParKulting.db")
+    db = sqlite3.connect("Database/ParKulting.db")
     cursor = db.cursor()
     sqlite_insert_query = f"""INSERT INTO points_in_park
                             (id, park_id, point, info, url, iris_id)
@@ -81,7 +81,7 @@ def add_park(name, img):
     img.save(im_file, format="JPEG")
     im_bytes = im_file.getvalue()
     im_b64 = base64.b64encode(im_bytes)
-    db = sqlite3.connect("ParKulting.db")
+    db = sqlite3.connect("Database/ParKulting.db")
     cursor = db.cursor()
     last_id = cursor.execute('select id from parks').fetchall()[-1]
     sqlite_insert_query = f"""INSERT INTO parks
@@ -93,7 +93,7 @@ def add_park(name, img):
 
 
 def park_in_base(name):
-    db = sqlite3.connect("ParKulting.db")
+    db = sqlite3.connect("Database/ParKulting.db")
     cursor = db.cursor()
     sql_req = f"""
                 SELECT * 
@@ -105,7 +105,7 @@ def park_in_base(name):
 
 
 def point_in_base(name):
-    db = sqlite3.connect("ParKulting.db")
+    db = sqlite3.connect("Database/ParKulting.db")
     cursor = db.cursor()
     sql_req = f"""
                 SELECT * 
@@ -115,14 +115,14 @@ def point_in_base(name):
     res = list(cursor.execute(sql_req))
     if len(res) == 1:
         if res[0][5] == None:
-            fold = os.listdir("pic\\")[-1]
+            fold = os.listdir("Data/pic\\")[-1]
             num = ""
             for i in fold:
                 if i in "0123456789":
                     num += i
             num = int(num) + 1
             os.mkdir("pic\\" + str(num) + name)
-            db = sqlite3.connect("ParKulting.db")
+            db = sqlite3.connect("Database/ParKulting.db")
             cursor = db.cursor()
 
             sql_req = f"""
@@ -148,7 +148,7 @@ def add_img(name, img):
 
 
 def get_folder_name(name):
-    db = sqlite3.connect("ParKulting.db")
+    db = sqlite3.connect("Database/ParKulting.db")
     cursor = db.cursor()
     sql_req = f"""
                     SELECT * 
